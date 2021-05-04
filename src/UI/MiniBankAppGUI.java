@@ -1,6 +1,7 @@
 package UI;
 
-import data.Account;
+import data.Transaction;
+import data.TransactionHistory;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,14 +17,15 @@ import java.util.Observer;
  */
 public class MiniBankAppGUI extends javax.swing.JFrame implements Observer{
 
-    Account account = new Account();
+    Transaction transaction;
+    TransactionHistory transactionHistory = new TransactionHistory();
             
     public MiniBankAppGUI() {
         initComponents();
         buttonGroup.add(radBtnSavings);
         buttonGroup.add(radBtnCurrent);
         radBtnSavings.setSelected(true);
-        account.addObserver(this);
+        transactionHistory.addObserver(this);
     }
 
     /**
@@ -41,13 +43,12 @@ public class MiniBankAppGUI extends javax.swing.JFrame implements Observer{
         btnWithdrawal = new javax.swing.JButton();
         btnDeposit = new javax.swing.JButton();
         lblTransfer = new javax.swing.JButton();
-        lblAmount1 = new javax.swing.JLabel();
-        txtAccountNo = new javax.swing.JTextField();
+        lblAccountNo = new javax.swing.JLabel();
         radBtnSavings = new javax.swing.JRadioButton();
         radBtnCurrent = new javax.swing.JRadioButton();
         lblAccountType = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtBalance = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaTransactionHistory = new javax.swing.JTextArea();
@@ -73,7 +74,7 @@ public class MiniBankAppGUI extends javax.swing.JFrame implements Observer{
 
         lblTransfer.setText("Transfer");
 
-        lblAmount1.setText("Account No.");
+        lblAccountNo.setText("Lets assume it's one and same account number");
 
         radBtnSavings.setText("Savings");
 
@@ -83,7 +84,7 @@ public class MiniBankAppGUI extends javax.swing.JFrame implements Observer{
 
         jLabel1.setText("Balance:");
 
-        jTextField1.setEditable(false);
+        txtBalance.setEditable(false);
 
         jLabel2.setText("History");
 
@@ -97,51 +98,46 @@ public class MiniBankAppGUI extends javax.swing.JFrame implements Observer{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblAmount)
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAmount)))
+                    .addComponent(lblAccountNo)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblAccountType)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(radBtnSavings)
+                        .addGap(38, 38, 38)
+                        .addComponent(radBtnCurrent))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(34, 34, 34)
-                        .addComponent(jTextField1))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblAmount)
-                                .addGap(39, 39, 39)
+                                .addGap(44, 44, 44)
+                                .addComponent(lblMessage))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnDeposit)
-                                        .addGap(18, 18, 18)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(145, 145, 145)
                                         .addComponent(btnWithdrawal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(lblTransfer))
-                                    .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAmount1)
-                                    .addComponent(lblAccountType))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(radBtnSavings)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(radBtnCurrent))
-                                    .addComponent(txtAccountNo, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(43, 43, 43)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblMessage)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                                        .addComponent(lblTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel2))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblAmount1)
-                    .addComponent(txtAccountNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addComponent(lblAccountNo)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(radBtnSavings)
@@ -158,25 +154,34 @@ public class MiniBankAppGUI extends javax.swing.JFrame implements Observer{
                     .addComponent(btnDeposit))
                 .addGap(18, 18, 18)
                 .addComponent(lblMessage)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(47, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnWithdrawalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawalActionPerformed
-        account.setBalance(Float.parseFloat(txtAmount.getText()), radBtnSavings.isSelected(), 2);
+        transaction = new Transaction();
+        transaction.addObserver(this);
+        transaction.setBalance(Float.parseFloat(txtAmount.getText()), radBtnSavings.isSelected(), 2);
+        transactionHistory.addTransaction(transaction);
     }//GEN-LAST:event_btnWithdrawalActionPerformed
 
     private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
+
+        
+        transaction = new Transaction();
+        transaction.addObserver(this);
+        transaction.setBalance(Float.parseFloat(txtAmount.getText()), radBtnSavings.isSelected(), 1);
+        transactionHistory.addTransaction(transaction);
         
     }//GEN-LAST:event_btnDepositActionPerformed
 
@@ -222,22 +227,28 @@ public class MiniBankAppGUI extends javax.swing.JFrame implements Observer{
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblAccountNo;
     private javax.swing.JLabel lblAccountType;
     private javax.swing.JLabel lblAmount;
-    private javax.swing.JLabel lblAmount1;
     private javax.swing.JLabel lblMessage;
     private javax.swing.JButton lblTransfer;
     private javax.swing.JRadioButton radBtnCurrent;
     private javax.swing.JRadioButton radBtnSavings;
-    private javax.swing.JTextField txtAccountNo;
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextArea txtAreaTransactionHistory;
+    private javax.swing.JTextField txtBalance;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void update(Observable o, Object arg) {
-        Account a = (Account) arg;
-        lblMessage.setText(a.getMessage());
+        
+        if (o.equals(transactionHistory)) {
+            String transactionHistory = (String) arg;
+            txtAreaTransactionHistory.setText(transactionHistory);
+        }else {
+            Transaction a = (Transaction) arg;
+            lblMessage.setText(a.getMessage());
+            txtBalance.setText(Float.toString(a.getBalance()));
+        }
     }
 }

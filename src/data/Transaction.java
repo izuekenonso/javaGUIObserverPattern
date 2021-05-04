@@ -6,13 +6,14 @@
 package data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Observable;
 
 /**
  *
  * @author izuek
  */
-public class Account extends Observable {
+public class Transaction extends Observable {
     
     private int accountNo;
     private int accountType;
@@ -73,26 +74,31 @@ public class Account extends Observable {
 
     public void setBalance(float amount, boolean radBtnSavings, int transactionType) {
         
+        this.transactionType = transactionType;
+        this.amount = amount;
+        this.setTime(LocalDateTime.now());
         
-        if (amount <= 0) {
+        if (this.getAmount() <= 0) {
             
             this.message = "Amount cannot be negative";
         }else {
         
         
                 
-            if (transactionType == 1) {
-                this.balance += amount;
+            if (this.getTransactionType() == 1) {
+                this.balance = this.balance + amount;
+                this.message = "Deposit Successful";
             }
 
 
 
-            if (transactionType == 2) {
+            if (this.getTransactionType() == 2) {
 
                 if (this.balance <= 0) {
                     this.message = "Insufficient Funds";
                 }else {
-                    this.balance -= amount;
+                    this.balance = this.balance - amount;
+                    this.message = "Withdrwal Successful";
                 }
             }
         }
@@ -111,6 +117,20 @@ public class Account extends Observable {
     }
     
     
-    
+    public String toString() {
+        
+        
+        String timeString = "";
+        String dateString = ""; 
+        String transactionTypeName = "";
+        
+        dateString = this.getTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        timeString = this.getTime().format(DateTimeFormatter.ofPattern("hh:mm:ss"));
+        
+        if (this.getTransactionType() == 1) transactionTypeName = "Deposit";
+        else if(this.getTransactionType() == 2) transactionTypeName = "Withdrawal";
+        
+        return transactionTypeName + " of " + this.getAmount() + " @ " + dateString + " " + timeString + " ==> Message: " + this.getMessage();
+    }
     
 }

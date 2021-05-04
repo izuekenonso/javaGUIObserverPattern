@@ -5,10 +5,33 @@
  */
 package data;
 
+import java.util.ArrayList;
+import java.util.Observable;
+
 /**
  *
  * @author izuek
  */
-public class TransactionHistory {
+public class TransactionHistory extends Observable {
     
+    ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
+    
+    public void addTransaction(Transaction transaction) {
+        transactionList.add(transaction);
+        setChanged();
+        notifyObservers(displayTransaction());
+    }
+    
+    
+    public String displayTransaction() {
+        
+        String allTransaction = "";
+        int i;
+        for (i = 0; i < transactionList.size(); i++) {
+            allTransaction += transactionList.get(i).toString() + "\n";
+        }
+        return allTransaction;
+        
+        
+    }
 }
