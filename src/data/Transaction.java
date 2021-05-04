@@ -133,4 +133,15 @@ public class Transaction extends Observable {
         return transactionTypeName + " of " + this.getAmount() + " @ " + dateString + " " + timeString + " ==> Message: " + this.getMessage();
     }
     
+    
+    public boolean equals(Transaction o) {
+        
+        if (o == null) return false;
+        if (this.amount == o.getAmount() && this.time == o.getTime() && this.transactionType == o.getTransactionType()) {
+            return true;
+        }
+        return false;
+        
+    }
+    
 }
