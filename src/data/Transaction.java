@@ -18,7 +18,7 @@ public class Transaction extends Observable {
     private int accountNo;
     private int accountType;
     private float amount;
-    private float balance = 0;
+    private float balance;
     private int transactionType;
     private LocalDateTime time;
     private String message;
@@ -45,7 +45,13 @@ public class Transaction extends Observable {
     }
 
     public void setAmount(float amount) {
-        this.amount = amount;
+        
+        if (amount <= 0) {
+            
+            this.message = "Amount cannot be negative";
+        }else {
+            this.amount = amount;
+        }
     }
     
 
@@ -74,19 +80,19 @@ public class Transaction extends Observable {
 
     public void setBalance(float amount, boolean radBtnSavings, int transactionType) {
         
+        System.out.println("Amount====> " + amount);
         this.transactionType = transactionType;
         this.amount = amount;
         this.setTime(LocalDateTime.now());
         
-        if (this.getAmount() <= 0) {
+        if (amount <= 0) {
             
             this.message = "Amount cannot be negative";
         }else {
         
-        
                 
             if (this.getTransactionType() == 1) {
-                this.balance = this.balance + amount;
+                this.balance += amount;
                 this.message = "Deposit Successful";
             }
 
@@ -94,11 +100,11 @@ public class Transaction extends Observable {
 
             if (this.getTransactionType() == 2) {
 
-                if (this.balance <= 0) {
-                    this.message = "Insufficient Funds";
+                if (balance < 0 || (balance - amount) < 0) {
+                    message = "Insufficient Funds";
                 }else {
-                    this.balance = this.balance - amount;
-                    this.message = "Withdrwal Successful";
+                    balance -= amount;
+                    message = "Withdrwal Successful";
                 }
             }
         }
@@ -137,7 +143,9 @@ public class Transaction extends Observable {
     public boolean equals(Transaction o) {
         
         if (o == null) return false;
-        if (this.amount == o.getAmount() && this.time == o.getTime() && this.transactionType == o.getTransactionType()) {
+        if (this.amount == o.getAmount() 
+                && this.time.equals(o.getTime()) 
+                && this.transactionType == o.getTransactionType()) {
             return true;
         }
         return false;
