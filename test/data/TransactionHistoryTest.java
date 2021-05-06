@@ -45,8 +45,7 @@ public class TransactionHistoryTest {
         System.out.println("addTransaction");
         Transaction transaction = new Transaction();
         
-        
-        transaction.setBalance(5, true, 1);
+        transaction.makeTransaction(5, true, transaction.DEPOSIT_OPERATION);
         
         TransactionHistory instance = new TransactionHistory();
         instance.addTransaction(transaction);

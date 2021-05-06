@@ -171,7 +171,7 @@ public class MiniBankAppGUI extends javax.swing.JFrame implements Observer{
     private void btnWithdrawalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawalActionPerformed
         transaction = new Transaction();
         transaction.addObserver(this);
-        transaction.setBalance(Float.parseFloat(txtAmount.getText()), radBtnSavings.isSelected(), 2);
+        transaction.makeTransaction(Float.parseFloat(txtAmount.getText()), radBtnSavings.isSelected(), transaction.WITHDRAWL_OPERATION);
         transactionHistory.addTransaction(transaction);
     }//GEN-LAST:event_btnWithdrawalActionPerformed
 
@@ -180,7 +180,7 @@ public class MiniBankAppGUI extends javax.swing.JFrame implements Observer{
         
         transaction = new Transaction();
         transaction.addObserver(this);
-        transaction.setBalance(Float.parseFloat(txtAmount.getText()), radBtnSavings.isSelected(), 1);
+        transaction.makeTransaction(Float.parseFloat(txtAmount.getText()), radBtnSavings.isSelected(), transaction.DEPOSIT_OPERATION);
         transactionHistory.addTransaction(transaction);
         
     }//GEN-LAST:event_btnDepositActionPerformed

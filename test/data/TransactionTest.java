@@ -55,7 +55,7 @@ public class TransactionTest {
     public void testDepositAmount() {
         System.out.println("depositAmount");
         Transaction instance = new Transaction();
-        instance.setBalance(5, true, 1);
+        instance.makeTransaction(5, true, instance.DEPOSIT_OPERATION);
         float expResult = 5.0F;
         float result = instance.getBalance();
         assertEquals(expResult, result, 0.0);
@@ -66,9 +66,9 @@ public class TransactionTest {
     public void testWithdrawAmount() {
         System.out.println("withdrawAmount");
         Transaction instance = new Transaction();
-        instance.setBalance(5, true, 1);
+        instance.makeTransaction(5, true, instance.DEPOSIT_OPERATION);
         
-        instance.setBalance(3, true, 2);
+        instance.makeTransaction(3, true, instance.WITHDRAWL_OPERATION);
         
         float expResult = 2.0F;
         float result = instance.getBalance();
@@ -95,7 +95,7 @@ public class TransactionTest {
         Transaction o = new Transaction();
         Transaction instance = new Transaction();
         
-        instance.setBalance(5, true, 1);
+        instance.makeTransaction(5, true, 1);
         
         o.setAmount(5);
         o.setTime(LocalDateTime.now());

@@ -23,7 +23,10 @@ public class Transaction extends Observable {
     private LocalDateTime time;
     private String message;
     
-
+    
+    public static final int DEPOSIT_OPERATION = 1;
+    public static final int WITHDRAWL_OPERATION = 2;
+    
     public int getAccountNo() {
         return accountNo;
     }
@@ -78,40 +81,9 @@ public class Transaction extends Observable {
         return balance;
     }
 
-    public void setBalance(float amount, boolean radBtnSavings, int transactionType) {
+    public void setBalance(float balance) {
+        this.balance = balance;
         
-        System.out.println("Amount====> " + amount);
-        this.transactionType = transactionType;
-        this.amount = amount;
-        this.setTime(LocalDateTime.now());
-        
-        if (amount <= 0) {
-            
-            this.message = "Amount cannot be negative";
-        }else {
-        
-                
-            if (this.getTransactionType() == 1) {
-                this.balance += amount;
-                this.message = "Deposit Successful";
-            }
-
-
-
-            if (this.getTransactionType() == 2) {
-
-                if (balance < 0 || (balance - amount) < 0) {
-                    message = "Insufficient Funds";
-                }else {
-                    balance -= amount;
-                    message = "Withdrwal Successful";
-                }
-            }
-        }
-
-        
-        setChanged();
-        notifyObservers(this);
     }
 
     public String getMessage() {
@@ -152,4 +124,40 @@ public class Transaction extends Observable {
         
     }
     
+    
+    public void makeTransaction(float amount, boolean radBtnSavings, int transactionType) {
+        
+        System.out.println("Amount====> " + amount);
+        this.transactionType = transactionType;
+        this.amount = amount;
+        this.setTime(LocalDateTime.now());
+        
+        if (amount <= 0) {
+            
+            this.message = "Amount cannot be negative";
+        }else {
+        
+                
+            if (this.getTransactionType() == DEPOSIT_OPERATION) {
+                this.balance += amount;
+                this.message = "Deposit Successful";
+            }
+
+
+
+            if (this.getTransactionType() == WITHDRAWL_OPERATION) {
+
+                if (balance < 0 || (balance - amount) < 0) {
+                    message = "Insufficient Funds";
+                }else {
+                    balance -= amount;
+                    message = "Withdrwal Successful";
+                }
+            }
+        }
+
+        
+        setChanged();
+        notifyObservers(this);
+    }
 }
